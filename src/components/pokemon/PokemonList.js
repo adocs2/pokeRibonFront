@@ -20,14 +20,16 @@ export default class PokemonList extends Component {
             {this.state.pokemon.map(pokemon => (
               <PokemonCard
                 key={pokemon.name}
+                pokemonId={pokemon['_id']['$oid']}
                 pokemonNumber={pokemon.pokemon_number}
                 name={pokemon.name}
                 imageUrl={pokemon.sprite}
+                type={pokemon.type}
               />
             ))}
           </div>
         ) : (
-          <img className="rounded mx-auto d-block" src={pokegif}></img>
+          <img className="mx-auto d-block" src={pokegif}></img>
         )}
       </React.Fragment>
     );
