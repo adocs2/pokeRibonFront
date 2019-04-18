@@ -53,6 +53,10 @@ export default class PokemonCreate extends Component {
     this.setState({ type: [] });
   }
 
+  blockButton() {
+    return this.state.type.length === 0 || this.state.name === ''
+}
+
   async submitFormHandler(state) {
     const typeValue = state.type.map(type => type.value);
     const evolutionChainFinal = state.evolutionChain.map(
@@ -138,6 +142,7 @@ export default class PokemonCreate extends Component {
               type="button"
               className="btn btn-success"
               value="Create Pokémon"
+              disabled={this.blockButton()}
               onClick={() => {
                 this.submitFormHandler(this.state);
               }}
