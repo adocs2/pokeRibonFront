@@ -64,7 +64,7 @@ export default class PokemonCard extends Component {
           <Card className="card">
             <div className="card-header">
               <div className="row">
-                <div className="col-3">
+                <div className="col-3"  style={{paddingRight: "0px"}}>
                   <h5>{this.state.pokemonNumber}</h5>
                 </div>
                 <div className="col-9">

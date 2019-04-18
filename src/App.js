@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import NavBar from "./components/layout/NavBar";
 import Pokemon from "./components/pokemon/Pokemon"
 import DashBoard from "./components/layout/DashBoard";
+import PokemonCreate from './components/pokemon/PokemonCreate'
 import background from "./vector-pokemon-badges-patterns.jpg";
 
 class App extends Component {
@@ -17,6 +18,7 @@ class App extends Component {
             <Switch>
               <Route exact path="/" component={DashBoard} />
               <Route exact path="/pokemon/:pokemonId" component={Pokemon}/>
+              <Route exact path="/create-pokemon" component={PokemonCreate}/>
             </Switch>
           </div>
         </div>

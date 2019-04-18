@@ -1,5 +1,11 @@
 import React, { Component } from "react";
 import axios from "axios";
+import styled from "styled-components";
+
+const Sprite = styled.img`
+  width: 18em;
+  height: 18em;
+`;
 
 const TYPE_COLORS = {
   bug: "A6B91A",
@@ -50,6 +56,13 @@ export default class Pokemon extends Component {
       evolutionChain
     });
   }
+  showEachEvolutionInChain(evolution) {
+    if (evolution === this.state.evolutionChain.slice(-1)[0]) {
+      return evolution;
+    } else {
+      return evolution + " -> ";
+    }
+  }
   render() {
     return (
       <div className="col">
@@ -81,19 +94,31 @@ export default class Pokemon extends Component {
             </div>
           </div>
           <div className="card-body">
-            <div className="row align-items-center">
-              <div className="col-md-3">
-                <img
-                  draggable="false"
-                  src={this.state.imageUrl}
-                  className="card-img-top rounded mx-auto mt-2"
-                />
-              </div>
-              <div className="col-md-9">
-                <h4 className="mx-auto" style={{ textTransform: "capitalize" }}>
-                  {this.state.name}
-                </h4>
-              </div>
+            <div className="text-center">
+              <Sprite
+                draggable="false"
+                src={this.state.imageUrl}
+                className="card-img-top rounded mx-auto"
+              />
+            </div>
+            <div className="text-center">
+              <h4 className="mx-auto" style={{ textTransform: "capitalize" }}>
+                {this.state.name}
+              </h4>
+            </div>
+            <div className="text-center">
+              <h5>
+                {this.state.evolutionChain.map(evolution => (
+                  <span
+                    key={evolution}
+                    style={{
+                      textTransform: "capitalize"
+                    }}
+                  >
+                    {this.showEachEvolutionInChain(evolution)}
+                  </span>
+                ))}
+              </h5>
             </div>
           </div>
         </div>
