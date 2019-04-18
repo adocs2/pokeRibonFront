@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import axios from "axios";
 import styled from "styled-components";
+import { Link, Redirect } from "react-router-dom";
 
 const Sprite = styled.img`
   width: 18em;
@@ -30,11 +31,13 @@ const TYPE_COLORS = {
 
 export default class Pokemon extends Component {
   state = {
+    pokemonId: "",
     name: "",
     type: [],
     pokemonNumber: "",
     imageUrl: "",
-    evolutionChain: []
+    evolutionChain: [],
+    redirect: false
   };
 
   async componentDidMount() {
@@ -49,12 +52,22 @@ export default class Pokemon extends Component {
     const evolutionChain = response.data["data"].evolution_chain;
 
     this.setState({
+      pokemonId: pokemonId,
       name,
       type,
       pokemonNumber,
       imageUrl,
       evolutionChain
     });
+  }
+
+  async deletePokemon() {
+    const res = await axios.delete(
+      `http://localhost:3000/api/v1/pokemon/${this.state.pokemonId}`
+    );
+    if (res.status === 200) {
+      this.setState({ redirect: true });
+    }
   }
   showEachEvolutionInChain(evolution) {
     if (evolution === this.state.evolutionChain.slice(-1)[0]) {
@@ -64,6 +77,9 @@ export default class Pokemon extends Component {
     }
   }
   render() {
+    if (this.state.redirect) {
+      return <Redirect to="/" />;
+    }
     return (
       <div className="col">
         <div className="card">
@@ -108,6 +124,7 @@ export default class Pokemon extends Component {
             </div>
             <div className="text-center">
               <h5>
+                Evolution Chain:
                 {this.state.evolutionChain.map(evolution => (
                   <span
                     key={evolution}
@@ -119,6 +136,24 @@ export default class Pokemon extends Component {
                   </span>
                 ))}
               </h5>
+            </div>
+            <div className="d-flex justify-content-between">
+              <Link to={`/edit-pokemon/${this.state.pokemonId}`}>
+                <button type="button" className="btn btn-warning">
+                  Edit Pokémon
+                </button>
+              </Link>
+              <button
+                type="button"
+                className="btn btn-danger"
+                onClick={e =>
+                  window.confirm(
+                    "Are you sure you wish to delete this Pokémon?"
+                  ) && this.deletePokemon(e)
+                }
+              >
+                Delete Pokémon
+              </button>
             </div>
           </div>
         </div>

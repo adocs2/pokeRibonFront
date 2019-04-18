@@ -6,6 +6,7 @@ import NavBar from "./components/layout/NavBar";
 import Pokemon from "./components/pokemon/Pokemon"
 import DashBoard from "./components/layout/DashBoard";
 import PokemonCreate from './components/pokemon/PokemonCreate'
+import PokemonEdit from './components/pokemon/PokemonEdit'
 import background from "./vector-pokemon-badges-patterns.jpg";
 
 class App extends Component {
@@ -19,6 +20,7 @@ class App extends Component {
               <Route exact path="/" component={DashBoard} />
               <Route exact path="/pokemon/:pokemonId" component={Pokemon}/>
               <Route exact path="/create-pokemon" component={PokemonCreate}/>
+              <Route exact path="/edit-pokemon/:pokemonId" component={PokemonEdit}/>
             </Switch>
           </div>
         </div>

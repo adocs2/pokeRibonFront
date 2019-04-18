@@ -25,7 +25,7 @@ const options = [
   { value: "flying", label: "Flying" }
 ];
 
-export default class PokemonCreate extends Component {
+export default class PokemonEdit extends Component {
   state = {
     name: "",
     type: [],
@@ -33,6 +33,39 @@ export default class PokemonCreate extends Component {
     evolutionChain: [],
     redirect: false
   };
+
+  async componentDidMount() {
+    const { pokemonId } = this.props.match.params;
+    const pokemonUrl = `http://localhost:3000/api/v1/pokemon/${pokemonId}`;
+
+    const response = await axios.get(pokemonUrl);
+    const name = response.data["data"].name;
+    const pokemonNumber = response.data["data"].pokemon_number;
+    const imageUrl = response.data["data"].sprite;
+    const type = response.data["data"].type.map(type => {
+      return {
+        value: type,
+        label: type
+      };
+    });
+    const evolutionChain = response.data["data"].evolution_chain.map(
+      evolution => {
+        return {
+          value: evolution,
+          label: evolution
+        };
+      }
+    );
+
+    this.setState({
+      pokemonId: pokemonId,
+      name,
+      type,
+      pokemonNumber,
+      imageUrl,
+      evolutionChain: evolutionChain.filter(evolution => evolution.value !== name)
+    });
+  }
 
   handleInputChange() {
     return e => {
@@ -54,12 +87,13 @@ export default class PokemonCreate extends Component {
   }
 
   async submitFormHandler(state) {
+    console.log(state);
     const typeValue = state.type.map(type => type.value);
     const evolutionChainFinal = state.evolutionChain.map(
       evolution => evolution.value
     );
     evolutionChainFinal.unshift(state.name);
-    const res = await axios.post("http://localhost:3000/api/v1/pokemon", {
+    const res = await axios.put(`http://localhost:3000/api/v1/pokemon/${state.pokemonId}`, {
       name: state.name,
       type: typeValue,
       sprite: state.imageUrl,
@@ -71,8 +105,8 @@ export default class PokemonCreate extends Component {
   }
   render() {
     if (this.state.redirect) {
-      return <Redirect to="/" />;
-    }
+        return <Redirect to="/" />;
+      }
     return (
       <div className="card">
         <div className="card-body">
@@ -137,7 +171,7 @@ export default class PokemonCreate extends Component {
               style={{ float: "right" }}
               type="button"
               className="btn btn-success"
-              value="Create Pokémon"
+              value="Save Pokémon"
               onClick={() => {
                 this.submitFormHandler(this.state);
               }}
