@@ -87,7 +87,6 @@ export default class PokemonEdit extends Component {
   }
 
   async submitFormHandler(state) {
-    console.log(state);
     const typeValue = state.type.map(type => type.value);
     const evolutionChainFinal = state.evolutionChain.map(
       evolution => evolution.value
